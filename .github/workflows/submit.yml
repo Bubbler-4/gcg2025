@@ -1,0 +1,23 @@
+name: Submit to Google Code Golf 2025
+
+on: push
+
+jobs:
+  build:
+    name: Submit to Google Code Golf 2025
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.10
+    - name: Setup Kaggle
+      run: pip install kaggle
+    - name: Pack and submit
+      run: |
+        python score_and_pack.py
+        kaggle competitions submit -c google-code-golf-2025 -f submission.zip -m '${{ github.sha }}'
+      env:
+        KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
